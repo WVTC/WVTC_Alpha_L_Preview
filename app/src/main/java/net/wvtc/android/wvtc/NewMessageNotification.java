@@ -52,6 +52,7 @@ public class NewMessageNotification {
 
 
         final String ticker = exampleString;
+
         final String title = res.getString(R.string.new_message_notification_title_template);
         final String text = exampleString;
 
