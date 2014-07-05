@@ -14,6 +14,7 @@ import android.net.NetworkInfo;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,7 +83,6 @@ public class Splash extends Activity implements ActionBar.TabListener {
                             .setTabListener(this));
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -215,7 +215,6 @@ public class Splash extends Activity implements ActionBar.TabListener {
 
     }
 
-
     public static class DummySectionFragment extends Fragment {
 
         private ProgressBar spinner;
@@ -238,10 +237,28 @@ public class Splash extends Activity implements ActionBar.TabListener {
             WebView mWebView;
             mWebView = (WebView) rootView.findViewById(R.id.webView);
             //Log.e("WVTC", "WVTC " + mWebView);
-            WebSettings webSettings = mWebView.getSettings();
+            final WebSettings webSettings = mWebView.getSettings();
             webSettings.setJavaScriptEnabled(true);
             mWebView.setVerticalScrollBarEnabled(true);
             mWebView.setHorizontalScrollBarEnabled(true);
+
+
+
+                new Thread(new Runnable() {
+                    public void run() {
+                        Log.e("WVTC", "WVTC no sync ");
+                        NewMessageNotification not = new NewMessageNotification();
+                       synchronized (not) {
+                           Log.e("WVTC", "WVTC sync");
+                           Context context = getActivity().getBaseContext();
+                           not.notify(context,"HEY",0);
+
+
+                       }
+
+                    }
+                }).start();
+
 
 
             spinner = (ProgressBar)rootView.findViewById(R.id.progressBar);
@@ -269,8 +286,7 @@ public class Splash extends Activity implements ActionBar.TabListener {
             if(getArguments().getInt(ARG_SECTION_NUMBER) == 2 )
             {
 
-
-                mWebView.loadUrl("http://www.wvtc.net/android/index.html");
+                    mWebView.loadUrl("http://www.wvtc.net/android/index.html");
                 mWebView.setWebViewClient(new WebViewClient() {
 
                     @Override
